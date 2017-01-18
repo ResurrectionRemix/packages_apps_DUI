@@ -37,6 +37,8 @@ import android.net.Uri;
 import android.os.UserHandle;
 import android.provider.Settings;
 import android.text.TextUtils;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -62,6 +64,7 @@ import com.android.systemui.navigation.smartbar.SmartBarTransitions;
 import com.android.systemui.navigation.smartbar.SmartBarView;
 import com.android.systemui.navigation.smartbar.SmartButtonView;
 import com.android.systemui.navigation.utils.SmartObserver.SmartObservable;
+import com.android.systemui.singlehandmode.SlideTouchEvent;
 import com.android.systemui.statusbar.phone.BarTransitions;
 import com.android.systemui.R;
 
@@ -87,6 +90,8 @@ public class SmartBarView extends BaseNavigationBar {
         sUris.add(Settings.Secure.getUriFor("smartbar_ime_hint_mode"));
         sUris.add(Settings.Secure.getUriFor("smartbar_button_animation_style"));
         sUris.add(Settings.Secure.getUriFor(Settings.Secure.NAVBAR_BUTTONS_ALPHA));
+        sUris.add(Settings.System.getUriFor(Settings.System.SMARTBAR_DOUBLETAP_SLEEP));
+        sUris.add(Settings.Secure.getUriFor(Settings.Secure.ONE_HANDED_MODE_UI));
     }
 
     private SmartObservable mObservable = new SmartObservable() {
@@ -106,6 +111,10 @@ public class SmartBarView extends BaseNavigationBar {
                 updateAnimationStyle();
             } else if (uri.equals(Settings.Secure.getUriFor(Settings.Secure.NAVBAR_BUTTONS_ALPHA))) {
                 updateButtonAlpha();
+            } else if (uri.equals(Settings.System.getUriFor(Settings.System.SMARTBAR_DOUBLETAP_SLEEP))) {
+                updateNavDoubletapSetting();
+            } else if (uri.equals(Settings.Secure.getUriFor(Settings.Secure.ONE_HANDED_MODE_UI))) {
+                updateOneHandedModeSetting();
             }
         }
     };
@@ -120,21 +129,55 @@ public class SmartBarView extends BaseNavigationBar {
     private ArrayList<String> mCurrentSequence = new ArrayList<String>();
     private View mContextRight, mContextLeft, mCurrentContext;
     private boolean mHasLeftContext;
+    private boolean isNavDoubleTapEnabled;
+    private boolean isOneHandedModeEnabled;
     private int mImeHintMode;
     private int mButtonAnimationStyle;
     private float mCustomAlpha;
     private static boolean mNavTintSwitch;
     public static int mIcontint;
 
+    private GestureDetector mNavDoubleTapToSleep;
+    private SlideTouchEvent mSlideTouchEvent;
+
     public SmartBarView(Context context, boolean asDefault) {
         super(context);
         mBarTransitions = new SmartBarTransitions(this);
+        mSlideTouchEvent = new SlideTouchEvent(context);
         mScreenPinningEnabled = asDefault;
         if (!asDefault) {
             mEditor = new SmartBarEditor(this);
             mSmartObserver.addListener(mObservable);
         }
         createBaseViews();
+
+        mNavDoubleTapToSleep = new GestureDetector(context,
+                new GestureDetector.SimpleOnGestureListener() {
+            @Override
+            public boolean onDoubleTap(MotionEvent e) {
+                ActionHandler.performTask(context, ActionHandler.SYSTEMUI_TASK_SCREENOFF);
+                return true;
+            }
+        });
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        if (isOneHandedModeEnabled) {
+            mSlideTouchEvent.handleTouchEvent(event);
+        }
+        if (isNavDoubleTapEnabled) {
+            mNavDoubleTapToSleep.onTouchEvent(event);
+        }
+        return super.onTouchEvent(event);
+    }
+
+    @Override
+    public boolean onInterceptTouchEvent(MotionEvent event) {
+        if (isOneHandedModeEnabled) {
+            mSlideTouchEvent.handleTouchEvent(event);
+        }
+        return super.onInterceptTouchEvent(event);
     }
 
     ArrayList<String> getCurrentSequence() {
@@ -151,6 +194,8 @@ public class SmartBarView extends BaseNavigationBar {
         recreateLayouts();
         updateImeHintModeSettings();
         updateContextLayoutSettings();
+        updateNavDoubletapSetting();
+        updateOneHandedModeSetting();
     }
 
     @Override
@@ -519,6 +564,16 @@ public class SmartBarView extends BaseNavigationBar {
         getHiddenContext().findViewWithTag(Res.Softkey.MENU_BUTTON).setVisibility(INVISIBLE);
         getHiddenContext().findViewWithTag(Res.Softkey.IME_SWITCHER).setVisibility(INVISIBLE);
         setNavigationIconHints(mNavigationIconHints, true);
+    }
+
+    private void updateNavDoubletapSetting() {
+        isNavDoubleTapEnabled = Settings.System.getIntForUser(getContext().getContentResolver(),
+                Settings.System.SMARTBAR_DOUBLETAP_SLEEP, 1, UserHandle.USER_CURRENT) == 1;
+    }
+
+    private void updateOneHandedModeSetting() {
+        isOneHandedModeEnabled = Settings.Secure.getIntForUser(getContext().getContentResolver(),
+                Settings.Secure.ONE_HANDED_MODE_UI, 1, UserHandle.USER_CURRENT) == 1;
     }
 
     void recreateButtonLayout(ArrayList<ButtonConfig> buttonConfigs, boolean landscape,
