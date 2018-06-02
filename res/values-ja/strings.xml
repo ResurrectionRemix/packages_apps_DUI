@@ -35,7 +35,7 @@
   <string name="label_action_wifi">WiFi</string>
   <string name="label_action_hotspot">公衆無線LAN</string>
   <string name="label_action_last_app">最後に使用したアプリ</string>
-  <string name="label_action_overview">最近</string>
+  <string name="label_action_overview">アプリ履歴</string>
   <string name="label_action_power_menu">電源メニュー</string>
   <string name="label_action_menu">メニュー</string>
   <string name="label_action_back">戻る</string>
