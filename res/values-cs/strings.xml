@@ -19,7 +19,7 @@
   <!-- Bindable action labels -->
   <string name="label_action_no_action">Žádné akce</string>
   <string name="label_action_settings_panel">Panel rychlého nastavení</string>
-  <string name="label_action_notification_panel">Panel upozornění</string>
+  <string name="label_action_notification_panel">Panel oznámení</string>
   <string name="label_action_screenshot">Snímek obrazovky</string>
   <string name="label_action_region_screenshot">Částečný snímek obrazovky</string>
   <string name="label_action_screenrecord">Záznam obrazovky</string>

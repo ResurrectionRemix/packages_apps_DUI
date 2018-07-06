@@ -25,7 +25,7 @@
   <string name="label_action_screenrecord">रिकॉर्ड स्क्रीन</string>
   <string name="label_action_expanded_desktop">विस्तारित डेस्कटॉप</string>
   <string name="label_action_screen_off">स्क्रीन बंद</string>
-  <string name="label_action_force_close_app">अनुप्रयोग बलपूर्वक बंद करें ।</string>
+  <string name="label_action_force_close_app">एप को  बलपूर्वक बंद करें ।</string>
   <string name="label_action_search_assistant">खोज सहायक</string>
   <string name="label_action_google_now_on_tap">गूगल असिस्टेंट</string>
   <string name="label_action_voice_search">आवाज से खोज</string>
@@ -63,7 +63,7 @@
   <string name="label_smartbar_cancel">रद्द करें</string>
   <string name="label_smartbar_finish">समाप्त</string>
   <string name="label_smartbar_single_tap">एक बार दबाए</string>
-  <string name="label_smartbar_double_tap">डबल टैप करें</string>
+  <string name="label_smartbar_double_tap">दो बार स्पर्श</string>
   <string name="label_smartbar_long_press">लंबे समय दबाए</string>
   <string name="label_smartbar_icon_pack">आइकन पैक</string>
   <string name="label_smartbar_icon_gallery">गैलरी</string>
