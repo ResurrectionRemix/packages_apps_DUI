@@ -17,7 +17,28 @@
  -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
   <!-- Bindable action labels -->
+  <string name="label_action_notification_panel">Varselpanel</string>
+  <string name="label_action_screenshot">Skjermdump</string>
+  <string name="label_action_region_screenshot">Delvis skjermdump</string>
+  <string name="label_action_screenrecord">Skjermopptak</string>
+  <string name="label_action_expanded_desktop">Utvidet skrivebord</string>
+  <string name="label_action_screen_off">Slå av skjerm</string>
+  <string name="label_action_overview">Sist brukt</string>
+  <string name="label_action_menu">Meny</string>
+  <string name="label_action_back">Tilbake</string>
+  <string name="label_action_home">Hjem</string>
+  <string name="label_action_stop_screenpinning">Avslutt skjermfesting</string>
+  <string name="label_action_volume_panel">Volumpanel</string>
+  <string name="label_action_clear_notifications">Rydd notifikasjoner</string>
+  <string name="label_action_editing_smartbar">SmartBar innstilling</string>
+  <string name="label_action_split_screen">Delt skjerm</string>
   <!-- Smartbar -->
+  <string name="label_smartbar_add">Legg til</string>
+  <string name="label_smartbar_remove">Fjern</string>
+  <string name="label_smartbar_cancel">Avbryt</string>
+  <string name="label_smartbar_finish">Fullfør</string>
+  <string name="label_smartbar_icon_gallery">Galleri</string>
+  <string name="label_smartbar_icon_color">Farge</string>
   <!-- App killed message -->
   <!-- Pulse and media arrows blacklist -->
 </resources>
